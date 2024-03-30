@@ -6,6 +6,10 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 
 ///////////////////////////////////////
 // Modal window
@@ -89,11 +93,8 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
+///////////////////////////////////////
 //Tabbed component
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
-
 tabsContainer.addEventListener('click', function (e) {
   //Note: We are using the "closest" element because, each button have a child element that we can mistakenly click,
   //and we wanted something that will still give us our "e.target"
@@ -116,6 +117,40 @@ tabsContainer.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('.operations__content--active');
 });
+
+///////////////////////////////////////
+// Menu Fade Animation
+// const refractured = function (e, opacity) {
+const refractured = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      //if (el !== link) el.style.opacity = opacity;
+      if (el !== link) el.style.opacity = this;
+    });
+    //logo.style.opacity = opacity;
+    logo.style.opacity = this;
+  }
+};
+
+//The "addEventListener" always expect a function!!!
+//nav.addEventListener('mouseover', refractured(e, 0.5) //it simply wont work like this
+//);
+//Works✅😊
+// nav.addEventListener('mouseover', function (e) {
+//   refractured(e, 0.5);
+// });
+// nav.addEventListener('mouseout', function (e) {
+//   refractured(e, 1);
+// });
+
+//A better refracturing method ✅😊, passing "argument" into handler
+nav.addEventListener('mouseover', refractured.bind(0.5));
+nav.addEventListener('mouseout', refractured.bind(1));
+
 //////////////////////////////////////
 //////////////////////////////////////
 // console.log(document.documentElement);
